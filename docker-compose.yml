@@ -31,8 +31,6 @@ services:
       - redis-data:/data
     networks:
       - stack
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
 
   calcom:
     image: calcom.docker.scarf.sh/calcom/cal.com
@@ -56,8 +54,6 @@ services:
     restart: always
     networks:
       - stack
-    ports:
-      - 3000:3000
     env_file: .env
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
@@ -76,8 +72,6 @@ services:
     restart: always
     networks:
       - stack
-    ports:
-      - "${API_PORT:-80}:${API_PORT:-80}"
     env_file: .env
     environment:
       - NODE_ENV=${NODE_ENV}
@@ -117,22 +111,3 @@ services:
       - database
       - redis
 
-  # Optional use of Prisma Studio. In production, comment out or remove the section below to prevent unwanted access to your database.
-  studio:
-    image: calcom.docker.scarf.sh/calcom/cal.com
-    restart: always
-    networks:
-      - stack
-    ports:
-      - 5555:5555
-    env_file: .env
-    environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
-      - DATABASE_DIRECT_URL=${DATABASE_URL}
-    depends_on:
-      - database
-    command:
-      - npx
-      - prisma
-      - studio
-# END SECTION: Optional use of Prisma Studio.
