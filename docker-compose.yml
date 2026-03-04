@@ -8,6 +8,8 @@ networks:
   stack:
     name: stack
     external: false
+  dokploy-network:
+    external: true
 
 services:
   database:
@@ -54,6 +56,7 @@ services:
     restart: always
     networks:
       - stack
+      - dokploy-network
     env_file: .env
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
@@ -72,6 +75,7 @@ services:
     restart: always
     networks:
       - stack
+      - dokploy-network
     env_file: .env
     environment:
       - NODE_ENV=${NODE_ENV}
